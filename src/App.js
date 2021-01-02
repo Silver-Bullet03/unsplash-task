@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import "./style.css";
+import Popup from './Popup';
 
 export default function App() {
   const [str,setStr] = useState('');
@@ -8,7 +9,7 @@ export default function App() {
   //c6ebXltp0E4xCYL08zURxJce-Yuhw0kEwGdFVyNxCLA
 
   const fetchImages = () =>{
-    fetch(`https://api.unsplash.com/search/photos/?client_id=c6ebXltp0E4xCYL08zURxJce-Yuhw0kEwGdFVyNxCLA&query=${str}&orientation=squarish&page=3&per_page=30`)
+    fetch(`https://api.unsplash.com/search/photos/?client_id=c6ebXltp0E4xCYL08zURxJce-Yuhw0kEwGdFVyNxCLA&query=${str}&orientation=portrait&page=1&per_page=30`)
     .then(res=>res.json())
     .then(data=>{
       setResult(data.results)
@@ -16,7 +17,7 @@ export default function App() {
   }
 
   const handleClick = () => {
-    
+    setPop(!pop);
   }
   return (
     <div className  = 'app'>
@@ -30,12 +31,14 @@ export default function App() {
       <div className = 'gallery' > 
           {
             result.map(item => {
-              return <div><img key = {item.id} 
+              return <div><div><img key = {item.id} 
                           className= 'image' 
                           src = {item.urls.regular}
-                          onClick = {()=>handleClick()}/>
-                          
-                    </div>
+                          onClick = {()=>handleClick()}/></div>
+                          <div>
+                             {pop? <Popup toggle = {handleClick}/>:null}
+                          </div>
+                     </div>
             })
           }
       </div>
